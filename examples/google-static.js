@@ -15,9 +15,6 @@ var options = {
 
 var map = new OpenLayers.Map({
     div: "map",
-    maxExtent: [-20037508.34, -20037508.34, 20037508.34, 20037508.34],
-    maxResolution: 156543.03390625,
-    units: "m",
     projection: "EPSG:3857",
     numZoomLevels: 22,
     layers: [
@@ -40,7 +37,23 @@ var map = new OpenLayers.Map({
             "Google Satellite",
             "http://maps.googleapis.com/maps/api/staticmap?sensor=false&maptype=satellite", 
             null, options
-        )
+        ),
+        // the same layer again, but scaled to allow map sizes up to 1280x1280 pixels
+        new OpenLayers.Layer.Grid(
+            "Google Satellite (scale=2)",
+            "http://maps.googleapis.com/maps/api/staticmap?sensor=false&maptype=satellite&scale=2", 
+            null, OpenLayers.Util.applyDefaults({
+                getURL: function() {
+                    var center = this.map.getCenter().transform("EPSG:3857", "EPSG:4326"),
+                        size = this.map.getSize();
+                    return [
+                        this.url, "&center=", center.lat, ",", center.lon,
+                        "&zoom=", (this.map.getZoom() - 1),
+                        "&size=", Math.floor(size.w / 2), "x", Math.floor(size.h / 2)
+                    ].join("");
+                }
+            }, options)
+        ),
     ],
     center: new OpenLayers.LonLat(10.2, 48.9).transform("EPSG:4326", "EPSG:3857"),
     zoom: 5
