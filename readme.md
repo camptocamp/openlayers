@@ -7,6 +7,7 @@ OpenLayers is a JavaScript library for building map applications
 on the web. OpenLayers is made available under a BSD-license.
 Please see license.txt in this distribution for more details.
 
+
 ## Getting OpenLayers
 
 OpenLayers lives at http://www.openlayers.org/.  Find details on downloading stable releases or the development version the [development site](http://trac.osgeo.org/openlayers/wiki/HowToDownload).
